@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "973398088120",
+    "firebase_url": "https://express-72e88.firebaseio.com",
+    "project_id": "express-72e88",
+    "storage_bucket": "express-72e88.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:973398088120:android:16bdaae4bf568398d1174d",
+        "android_client_info": {
+          "package_name": "com.Auptimism.Express"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "973398088120-mmpeq7a28vemboa0v838tj2sd146laiq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.Auptimism.Express",
+            "certificate_hash": "3254f60cdd5ce1ccec79fcc03bcc53fe7e637f8e"
+          }
+        },
+        {
+          "client_id": "973398088120-4ij16eab1kbfraeegi9414gvd53fnbl9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJl7sxj82az5DGINtR9T8WE3E7a5UHolY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "973398088120-4ij16eab1kbfraeegi9414gvd53fnbl9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
