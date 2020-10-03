@@ -1,8 +1,8 @@
-import 'package:Express/dynBackground.dart';
 import 'package:Express/screens/forgotPassword.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../services/authentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -10,10 +10,12 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 var h = 18.0;
 bool name = true;
+bool parentName = true;
 bool dob = true;
 bool phone = true;
 bool email = true;
 bool psw = true;
+bool docCode = true;
 
 class LoginSignupPage extends StatefulWidget {
   LoginSignupPage({this.auth, this.loginCallback});
@@ -32,8 +34,13 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   String _password;
   String _errorMessage;
   String _name;
+  String _parentName;
   String _dob;
   String _mobNo;
+  String _process;
+  String _docCode;
+  bool _doc;
+  Widget _aboveForm;
 
   bool _isLoginForm;
   bool _isLoading;
@@ -65,14 +72,24 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           widget.auth.sendEmailVerification();
           _showVerifyEmailSentDialog();
           print('Signed up user: $userId');
-
-          Firestore.instance.collection('users').document(userId).setData({
-            'name': _name,
-            'dob': _dob,
-            'email': _email,
-            'courses': [],
-            'mobno': _mobNo,
-          });
+          
+          if(_doc){
+            Firestore.instance.collection('doctors').document(userId).setData({
+              'name': _name,
+              'dob': _dob,
+              'email': _email,
+              'mobno': _mobNo,
+            });
+          }
+          else{
+            Firestore.instance.collection('doctors').document(_docCode).collection('patients').document(userId).setData({
+              'name' : _name,
+              'dob' : _dob,
+              'email' : _email,
+              'parentName' : _parentName,
+              'mobno' : _mobNo,
+            });
+          }
         }
         setState(() {
           _isLoading = false;
@@ -96,10 +113,12 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
   @override
   void initState() {
+    super.initState();
     _errorMessage = "";
     _isLoading = false;
     _isLoginForm = true;
-    super.initState();
+    _process = 'Sign In';
+    _doc = false;
   }
 
   void resetForm() {
@@ -112,47 +131,150 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       () {
         _errorMessage = "";
         _isLoginForm = !_isLoginForm;
+        _process = _isLoginForm ? 'Sign In' : 'Register';
         h = (_isLoginForm) ? 18.0 : 27.0;
         name = true;
         dob = true;
         phone = true;
         email = true;
         psw = true;
+        parentName = true;
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: new Scaffold(
-        body: Stack(
-          children: <Widget>[
-            Positioned.fill(child: AnimatedBackground()),
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-                child: Container(
-                  height: scaler.getHeight(h),
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 10.0,
-                        spreadRadius: 1.0,
-                        offset: Offset(0.0, 8.0),
-                      ),
-                    ],
-                    borderRadius: BorderRadius.circular(20.0),
-                    color: Colors.white,
-                  ),
-                ),
+    if(_isLoginForm){
+      _aboveForm = Container(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          'Sign in with email',
+          style: GoogleFonts.montserrat(
+            textStyle: Theme.of(context).textTheme.headline4,
+          ),
+        ),
+      );
+    }
+    else{
+      _aboveForm = Container(
+        alignment: Alignment.center,
+        child: Column(
+          children: [
+            Text(
+              'Choose account type',
+              style: GoogleFonts.montserrat(
+                textStyle: Theme.of(context).textTheme.headline4,
               ),
             ),
-            _showForm(),
-            _showCircularProgress()
+            Container(
+              margin: EdgeInsets.only(top: 15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    height: scaler.getHeight(1.2),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(9.0),
+                      border: Border.all(color: _doc? Theme.of(context).primaryColor : Colors.transparent, width: 3.0)
+                    ),
+                    child: RaisedButton(
+                      child: Text(
+                        'Doctor',
+                        style: GoogleFonts.montserrat(
+                          textStyle: Theme.of(context).textTheme.headline3,
+                        ),
+                      ),
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6.0)
+                      ),
+                      onPressed: (){
+                        setState(() {
+                          _doc = true;
+                        });
+                      },
+                    ),
+                  ),
+                  Container(
+                    height: scaler.getHeight(1.2),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(9.0),
+                      border: Border.all(color:_doc? Colors.transparent : Theme.of(context).primaryColor, width: 3.0)
+                    ),
+                    child: RaisedButton(
+                      child: Text(
+                        'User',
+                        style: GoogleFonts.montserrat(
+                          textStyle: Theme.of(context).textTheme.headline3,
+                        ),
+                      ),
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6.0)
+                      ),
+                      onPressed: (){
+                        setState(() {
+                          _doc = false;
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
+        ),
+      );
+    }
+    return SafeArea(
+      child: new Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          title: Container(
+            margin: EdgeInsets.only(top: 20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                IconButton(
+                  splashRadius: 14,
+                  icon: Icon(
+                    Icons.close,
+                    color: Colors.black,
+                  ),
+                  onPressed: (){}
+                ),
+                Text(
+                  _process,
+                  style: GoogleFonts.montserrat(
+                    textStyle: Theme.of(context).textTheme.headline6,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.only(top: 20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                _showForm(),
+                _showCircularProgress()
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -186,8 +308,8 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           content: new Text(
             "Link to verify account has been sent to your email",
             style: TextStyle(
-              color: Colors.black,
-              fontSize: scaler.getTextSize(7.0),
+              color: Theme.of(context).primaryColor,
+              fontSize: scaler.getTextSize(6.5),
               fontFamily: 'Montserrat',
               fontWeight: FontWeight.w500,
             ),
@@ -198,7 +320,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                 "Dismiss",
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: scaler.getTextSize(7.5),
+                  fontSize: scaler.getTextSize(5.8),
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w700,
                 ),
@@ -219,7 +341,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       key: _formKey,
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(30.0, 5.0, 40.0, 5.0),
+          padding: const EdgeInsets.fromLTRB(30.0, 0.0, 40.0, 5.0),
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -227,18 +349,15 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                 showLogo(),
                 showNameInput(),
                 showDobInput(),
+                (!_doc) ? showParentNameInput(): Container(height: 0.0, width: 0.0,),
                 showMobNoInput(),
                 showEmailInput(),
                 showPasswordInput(),
+                (!_doc) ? showDocCodeInput(): Container(height: 0.0, width: 0.0,),
+                Container(margin: EdgeInsets.only(top: 10.0),),
                 showErrorMessage(),
                 showPrimaryButton(),
-                SizedBox(
-                  height: scaler.getHeight(0.5),
-                ),
-                if (_isLoginForm) showForgotPassword(context),
-                SizedBox(
-                  height: scaler.getHeight(0.5),
-                ),
+                if (_isLoginForm) Container(margin: EdgeInsets.only(top: 10.0),child: showForgotPassword(context)),
                 showSecondaryButton(),
               ],
             ),
@@ -277,6 +396,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   }
 
   Widget showLogo() {
+    // ignore: unused_local_variable
     ScreenScaler scaler = ScreenScaler();
     return new Hero(
       tag: 'hero',
@@ -287,31 +407,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              'Express',
-              style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontSize: scaler.getTextSize(10.6),
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.w900,
-              ),
-            ),
-            Row(
-              children: <Widget>[
-                SizedBox(
-                  width: 2.0,
-                ),
-                Text(
-                  'insert fucking tag line',
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontSize: scaler.getTextSize(7.0),
-                    fontFamily: 'Montserrat',
-                    letterSpacing: -0.5,
-                  ),
-                ),
-              ],
-            ),
+            _aboveForm
           ],
         ),
       ),
@@ -326,10 +422,14 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           maxLines: 1,
           keyboardType: TextInputType.text,
           autofocus: false,
-          style: TextStyle(fontFamily: 'Montserrat'),
+          style: GoogleFonts.montserrat(
+            textStyle: Theme.of(context).textTheme.headline2,
+          ),
           decoration: new InputDecoration(
               hintText: 'Name',
-              hintStyle: TextStyle(fontFamily: 'Montserrat'),
+              hintStyle: GoogleFonts.montserrat(
+                textStyle: Theme.of(context).textTheme.headline2,
+              ),
               icon: new Icon(
                 Icons.face,
                 color: Colors.grey[400],
@@ -356,6 +456,90 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     }
   }
 
+  Widget showParentNameInput() {
+    if (!_isLoginForm) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+        child: new TextFormField(
+          maxLines: 1,
+          keyboardType: TextInputType.text,
+          autofocus: false,
+          style: GoogleFonts.montserrat(
+            textStyle: Theme.of(context).textTheme.headline2,
+          ),
+          decoration: new InputDecoration(
+              hintText: 'Parent\'s Name',
+              hintStyle: GoogleFonts.montserrat(
+                textStyle: Theme.of(context).textTheme.headline2,
+              ),
+              icon: new Icon(
+                Icons.face,
+                color: Colors.grey[400],
+              )),
+          validator: (value) {
+            if (value.isEmpty && parentName) {
+              h += 1.0;
+              parentName = false;
+              return 'Parent\'s name can\'t be empty';
+            } else if (value.isEmpty) {
+              return 'Parent\'s name can\'t be empty';
+            } else {
+              parentName = true;
+              return null;
+            }
+          },
+          onSaved: (value) => _parentName = value,
+        ),
+      );
+    } else {
+      return new Container(
+        height: 0.0,
+      );
+    }
+  }
+
+  Widget showDocCodeInput() {
+    if (!_isLoginForm) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+        child: new TextFormField(
+          maxLines: 1,
+          keyboardType: TextInputType.text,
+          autofocus: false,
+          style: GoogleFonts.montserrat(
+            textStyle: Theme.of(context).textTheme.headline2,
+          ),
+          decoration: new InputDecoration(
+              hintText: 'Doctor\'s Code',
+              hintStyle: GoogleFonts.montserrat(
+                textStyle: Theme.of(context).textTheme.headline2,
+              ),
+              icon: new Icon(
+                Icons.code,
+                color: Colors.grey[400],
+              )),
+          validator: (value) {
+            if (value.isEmpty && parentName) {
+              h += 1.0;
+              docCode = false;
+              return 'Doctor\'s code can\'t be empty';
+            } else if (value.isEmpty) {
+              return 'Doctor\'s code can\'t be empty';
+            } else {
+              docCode = true;
+              return null;
+            }
+          },
+          onSaved: (value) => _docCode = value,
+        ),
+      );
+    } else {
+      return new Container(
+        height: 0.0,
+      );
+    }
+  }
+
   Widget showDobInput() {
     final format = DateFormat("dd-MM-yyyy");
     if (!_isLoginForm) {
@@ -363,7 +547,9 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
         child: DateTimeField(
           format: format,
-          style: TextStyle(fontFamily: 'Montserrat'),
+          style: GoogleFonts.montserrat(
+            textStyle: Theme.of(context).textTheme.headline2,
+          ),
           decoration: InputDecoration(
             hintText: 'dd/mm/yyyy',
             icon: Icon(
@@ -383,7 +569,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                       buttonTheme:
                           ButtonThemeData(textTheme: ButtonTextTheme.primary),
                       colorScheme: ColorScheme.light(
-                        primary: Color(0xff2f2ea6),
+                        primary: Theme.of(context).primaryColor,
                       ),
                       dialogBackgroundColor: Colors.white),
                   child: child,
@@ -410,13 +596,17 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           maxLines: 1,
           keyboardType: TextInputType.phone,
           autofocus: false,
-          style: TextStyle(fontFamily: 'Montserrat'),
+          style: GoogleFonts.montserrat(
+            textStyle: Theme.of(context).textTheme.headline2,
+          ),
           inputFormatters: [
             LengthLimitingTextInputFormatter(10),
           ],
           decoration: new InputDecoration(
               hintText: 'Mobile Number',
-              hintStyle: TextStyle(fontFamily: 'Montserrat'),
+              hintStyle: GoogleFonts.montserrat(
+                textStyle: Theme.of(context).textTheme.headline2,
+              ),
               icon: new Icon(
                 Icons.call,
                 color: Colors.grey[400],
@@ -462,10 +652,14 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,
         autofocus: false,
-        style: TextStyle(fontFamily: 'Montserrat'),
+        style: GoogleFonts.montserrat(
+          textStyle: Theme.of(context).textTheme.headline2,
+        ),
         decoration: new InputDecoration(
             hintText: 'Email',
-            hintStyle: TextStyle(fontFamily: 'Montserrat'),
+            hintStyle: GoogleFonts.montserrat(
+              textStyle: Theme.of(context).textTheme.headline2,
+            ),
             icon: new Icon(
               Icons.mail,
               color: Colors.grey[400],
@@ -490,15 +684,18 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   Widget showPasswordInput() {
     return Container(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
-      margin: EdgeInsets.only(bottom: 10.0),
       child: new TextFormField(
         maxLines: 1,
         obscureText: true,
         autofocus: false,
-        style: TextStyle(fontFamily: 'Montserrat'),
+        style: GoogleFonts.montserrat(
+          textStyle: Theme.of(context).textTheme.headline2,
+        ),
         decoration: new InputDecoration(
             hintText: 'Password',
-            hintStyle: TextStyle(fontFamily: 'Montserrat'),
+            hintStyle: GoogleFonts.montserrat(
+              textStyle: Theme.of(context).textTheme.headline2,
+            ),
             icon: new Icon(
               Icons.lock,
               color: Colors.grey[400],
@@ -532,10 +729,9 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                   _isLoginForm
                       ? 'Create an account'
                       : 'Have an account?  Sign in',
-                  style: new TextStyle(
-                      fontSize: scaler.getTextSize(7.0),
-                      fontWeight: FontWeight.w400,
-                      fontFamily: 'Montserrat')),
+                  style: GoogleFonts.montserrat(
+                    textStyle: Theme.of(context).textTheme.headline2,
+                  ),),
               onPressed: toggleFormMode),
         ),
       ),
@@ -548,20 +744,18 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       margin: EdgeInsets.symmetric(horizontal: 0.0),
       child: Align(
         child: SizedBox(
-          width: scaler.getWidth(18.0),
+          width: scaler.getWidth(24.0),
           child: new RaisedButton(
             elevation: 2.0,
             shape: new RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(10.0),
+              borderRadius: new BorderRadius.circular(4.0),
             ),
             color: Theme.of(context).primaryColor,
             child: new Text(
               _isLoginForm ? 'Login' : 'Create Account',
-              style: new TextStyle(
-                  fontSize: scaler.getTextSize(8.0),
-                  color: Theme.of(context).primaryColorDark,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'Montserrat'),
+              style: GoogleFonts.montserrat(
+                textStyle: Theme.of(context).textTheme.headline5,
+              ),
             ),
             onPressed: validateAndSubmit,
           ),
@@ -572,11 +766,17 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 }
 
 Widget showForgotPassword(context) {
+  ScreenScaler scaler = new ScreenScaler();
   return GestureDetector(
     child: Text(
       'Forgot Password?',
-      style: TextStyle(
-        fontFamily: 'Montserrat',
+      style: GoogleFonts.montserrat(
+        textStyle: TextStyle(
+          color: Colors.grey,
+          fontSize: scaler.getTextSize(5.8),
+          fontWeight: FontWeight.w400,
+          letterSpacing: 0.4
+        )
       ),
     ),
     onTap: () {
