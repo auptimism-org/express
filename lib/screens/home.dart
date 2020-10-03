@@ -1,3 +1,4 @@
+import 'package:Express/screens/draw.dart';
 import 'package:Express/screens/login_signup_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,8 @@ class _HomePageState extends State<HomePage> {
       try {
         await widget.auth.signOut();
         widget.logoutCallback();
-        Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => LoginSignupPage()));
+        Navigator.pushReplacement(context,
+            CupertinoPageRoute(builder: (context) => LoginSignupPage()));
       } catch (e) {
         print(e);
       }
@@ -67,14 +69,30 @@ class _HomePageState extends State<HomePage> {
         onRefresh: _refresh,
         child: SingleChildScrollView(
           child: SafeArea(
-            child: Container(
-              alignment: Alignment.center,
-              child: RaisedButton(
-                child: Text('Sign Out'),
-                onPressed: (){
-                  signOut();
-                },
-              ),
+            child: Column(
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  child: RaisedButton(
+                    child: Text('Sign Out'),
+                    onPressed: () {
+                      signOut();
+                    },
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  child: RaisedButton(
+                    child: Text('Draw'),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Draw()),
+                      );
+                    },
+                  ),
+                )
+              ],
             ),
           ),
         ),
