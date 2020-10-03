@@ -1,4 +1,5 @@
 import 'package:Express/screens/carousel.dart';
+import 'package:Express/screens/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -66,6 +67,17 @@ class _DoctorHomeState extends State<DoctorHome> {
                             context,
                             CupertinoPageRoute(
                                 builder: (context) => ImgCarousel()));
+                      },
+                    )),
+                Container(
+                    alignment: Alignment.center,
+                    child: RaisedButton(
+                      child: Text('profile'),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => ProfilePage()));
                       },
                     )),
               ],

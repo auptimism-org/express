@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
             snapshot.connectionState == ConnectionState.waiting)
           return const Text('');
 
-        for (int i = 0; i < snapshot.data.documents.length; i++) {
+        for (int i = 1; i < snapshot.data.documents.length; i++) {
           if (userEmail.compareTo(snapshot.data.documents[i]['email']) == 0) {
             return DoctorHome(
               signOut: signOut,
