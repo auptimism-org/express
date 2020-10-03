@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'screens/wrapper.dart';
 import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
+import 'package:splashscreen/splashscreen.dart';
 
 void main() {
   runApp(App());
@@ -12,6 +13,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Express',
       theme: ThemeData(
         primaryColor: Color(0xFF56CCF2),
@@ -33,7 +35,20 @@ class App extends StatelessWidget {
           ),
         ),
       ),
-      home: Wrapper(),
+      home: SplashScreen(
+        seconds: 4,
+        navigateAfterSeconds: AfterSplash(),
+        image: new Image.asset('assets/images/logo.png'),
+        backgroundColor: Colors.white,
+        photoSize: 150.0
+      ),
     );
+  }
+}
+
+class AfterSplash extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Wrapper();
   }
 }
