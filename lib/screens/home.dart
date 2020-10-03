@@ -1,7 +1,9 @@
+import 'package:Express/screens/doctorHome.dart';
 import 'package:Express/screens/login_signup_page.dart';
+import 'package:Express/screens/patientHome.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/authentication.dart';
 
@@ -26,7 +28,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final double mainCurve = 25.0;
   FirebaseUser user;
   String userEmail;
 
@@ -34,68 +35,40 @@ class _HomePageState extends State<HomePage> {
     user = await FirebaseAuth.instance.currentUser();
     userEmail = user.email;
   }
-
+  
   @override
   void initState() {
-    _loadUser();
     super.initState();
+    _loadUser();
   }
 
   @override
   Widget build(BuildContext context) {
-    // ignore: unused_local_variable
-    ScreenScaler scaler = new ScreenScaler();
-
     signOut() async {
       try {
         await widget.auth.signOut();
         widget.logoutCallback();
-        Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => LoginSignupPage()));
+        Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => LoginSignupPage(auth: new Auth(),)));
       } catch (e) {
         print(e);
       }
     }
 
-    Future<Null> _refresh() async {
-      setState(() {});
-      return null;
-    }
+    return StreamBuilder(
+      stream: Firestore.instance.collection('doctors').snapshots(),
+      // ignore: missing_return
+      builder: (context,snapshot){
+        if(!snapshot.hasData && snapshot.connectionState == ConnectionState.waiting)
+          return const Text('');
 
-    return Scaffold(
-      backgroundColor: Color(0xffffffff),
-      body: RefreshIndicator(
-        onRefresh: _refresh,
-        child: SingleChildScrollView(
-          child: SafeArea(
-            child: Container(
-              alignment: Alignment.center,
-              child: RaisedButton(
-                child: Text('Sign Out'),
-                onPressed: (){
-                  signOut();
-                },
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+        for(int i=0; i<snapshot.data.documents.length; i++){
+          if(userEmail.compareTo(snapshot.data.documents[i]['email']) == 0){
+            return DoctorHome(signOut: signOut, auth: widget.auth, logoutCallback: widget.logoutCallback,);
+          }
+        }
 
-class CustomNavRoute<T> extends MaterialPageRoute<T> {
-  CustomNavRoute({WidgetBuilder builder, RouteSettings settings})
-      : super(builder: builder, settings: settings);
-
-  @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
-    return new SlideTransition(
-      position: Tween<Offset>(
-        begin: const Offset(0.0, 1.0),
-        end: Offset.zero,
-      ).animate(animation),
-      child: child,
+        return PatientHome(signOut: signOut, auth: widget.auth, logoutCallback: widget.logoutCallback,);
+      },
     );
   }
 }
