@@ -10,12 +10,6 @@ void main() {
   Paint.enableDithering = true;
   runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: new ThemeData(
-        primaryColor: Color(0xFF56CCF2),
-        primaryColorLight: Color(0x7756CCF2),
-        accentColor: Color(0xFFE5E5E5),
-        scaffoldBackgroundColor: Colors.white,
-      ),
       home: MyApp(),
       routes: {
         '/home': (context) => new Home(),
@@ -31,6 +25,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
+    ScreenScaler scaler = new ScreenScaler();
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Express',
@@ -50,6 +46,26 @@ class _MyAppState extends State<MyApp> {
               fontSize: scaler.getTextSize(6.5),
               fontWeight: FontWeight.w400,
               letterSpacing: 0.4),
+          headline3: TextStyle(
+              color: Color(0xFF56CCF2),
+              fontSize: scaler.getTextSize(6.5),
+              fontWeight: FontWeight.w500,
+              letterSpacing: 0.4),
+          headline4: TextStyle(
+              color: Colors.black,
+              fontSize: scaler.getTextSize(6.5),
+              fontWeight: FontWeight.w700,
+              letterSpacing: -0.2),
+          headline5: TextStyle(
+              color: Colors.white,
+              fontSize: scaler.getTextSize(6.5),
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.4),
+          headline6: TextStyle(
+              color: Colors.black,
+              fontSize: scaler.getTextSize(7.5),
+              fontWeight: FontWeight.w700,
+              letterSpacing: -0.2),
         ),
       ),
       home: SplashScreen(
@@ -57,7 +73,7 @@ class _MyAppState extends State<MyApp> {
           navigateAfterSeconds: AfterSplash(),
           image: new Image.asset('assets/images/logo.png'),
           backgroundColor: Colors.white,
-          photoSize: 150.0),
+          photoSize: 120.0),
     );
   }
 }

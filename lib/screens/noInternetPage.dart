@@ -9,7 +9,7 @@ class NoInternetPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'DesForm',
+          'Express',
           style: TextStyle(
             color: Colors.white,
             fontSize: scaler.getTextSize(9.0),
@@ -18,7 +18,7 @@ class NoInternetPage extends StatelessWidget {
           ),
         ),
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.red[600],
+        backgroundColor: Theme.of(context).primaryColor,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(15.0),

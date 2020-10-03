@@ -10,27 +10,27 @@ class ForgotPasswordScreen extends StatelessWidget {
     ScreenScaler scaler = ScreenScaler();
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      backgroundColor: Color(0xff2f2ea6),
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 10.0),
+              padding: const EdgeInsets.only(top: 10.0, left: 10.0),
               child: Row(
                 children: <Widget>[
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: Icon(Icons.chevron_left),
-                    color: Color(0xffffffff),
-                    iconSize: scaler.getWidth(3.0),
+                    icon: Icon(Icons.close),
+                    color: Colors.black,
+                    iconSize: scaler.getWidth(1.5),
                   ),
                   Text(
                     'Forgot password?',
                     style: TextStyle(
-                      color: Color(0xffffffff),
+                      color: Colors.black,
                       fontWeight: FontWeight.w800,
                       fontFamily: 'Montserrat',
-                      fontSize: scaler.getTextSize(8.5),
+                      fontSize: scaler.getTextSize(7),
                     ),
                   )
                 ],
@@ -38,13 +38,8 @@ class ForgotPasswordScreen extends StatelessWidget {
             ),
             Expanded(
               child: Container(
-                margin: EdgeInsets.only(top: 10.0),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                    topRight: Radius.circular(20.0),
-                  ),
                 ),
                 child: Column(
                   children: <Widget>[
@@ -68,18 +63,18 @@ class ForgotPasswordScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: scaler.getHeight(1.0),
+                      height: scaler.getHeight(0.4),
                     ),
                     RaisedButton(
                         shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(10.0),
+                          borderRadius: new BorderRadius.circular(5.0),
                         ),
                         child: Text(
                           'Reset password',
                           style: TextStyle(
                               fontFamily: 'Montserrat', color: Colors.white),
                         ),
-                        color: Theme.of(context).primaryColorLight,
+                        color: Theme.of(context).primaryColor,
                         onPressed: () {
                           resetPassword(context);
                         }),
