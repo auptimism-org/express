@@ -1,22 +1,21 @@
-import 'package:Express/screens/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import '../services/authentication.dart';
 
-class PatientHome extends StatefulWidget {
-  PatientHome({this.signOut,this.auth,this.logoutCallback});
+class DoctorHome extends StatefulWidget {
+  DoctorHome({this.signOut,this.auth,this.logoutCallback});
   
   final Function signOut;
   final BaseAuth auth;
   final VoidCallback logoutCallback;
 
   @override
-  _PatientHomeState createState() => _PatientHomeState();
+  _DoctorHomeState createState() => _DoctorHomeState();
 }
 
-class _PatientHomeState extends State<PatientHome> {
+class _DoctorHomeState extends State<DoctorHome> {
   FirebaseUser user;
   String userEmail;
 
@@ -48,21 +47,11 @@ class _PatientHomeState extends State<PatientHome> {
           child: SafeArea(
             child: Container(
               alignment: Alignment.center,
-              child: Column(
-                children: [
-                  RaisedButton(
-                    child: Text('Sign Out'),
-                    onPressed: (){
-                      widget.signOut();
-                    },
-                  ),
-                  RaisedButton(
-                    child: Text('Draw'),
-                    onPressed: (){
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => Draw()));
-                    },
-                  ),
-                ],
+              child: RaisedButton(
+                child: Text('me is doc lol'),
+                onPressed: (){
+                  widget.signOut();
+                },
               ),
             ),
           ),
