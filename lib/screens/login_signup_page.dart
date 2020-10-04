@@ -67,6 +67,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         if (_isLoginForm) {
           userId = await widget.auth.signIn(_email, _password);
           print('Signed in: $userId');
+          //print(DateFormat("yyyyMMddHHmmss").format(DateTime.now()));
         } else {
           userId = await widget.auth.signUp(_email, _password);
           widget.auth.sendEmailVerification();
@@ -74,20 +75,25 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           print('Signed up user: $userId');
           
           if(_doc){
-            Firestore.instance.collection('doctors').document(userId).setData({
+            Firestore.instance.collection("doctors").document(userId).setData({
               'name': _name,
               'dob': _dob,
               'email': _email,
               'mobno': _mobNo,
+              'patients':{}
             });
           }
           else{
-            Firestore.instance.collection('doctors').document(_docCode).collection('patients').document(userId).setData({
-              'name' : _name,
-              'dob' : _dob,
-              'email' : _email,
-              'parentName' : _parentName,
-              'mobno' : _mobNo,
+            Firestore.instance.collection("doctors").document(_docCode).updateData({
+              'patients.$userId': {
+                'name': _name,
+                'dob': _dob,
+                'email': _email,
+                'parentName': _parentName,
+                'mobno': _mobNo,
+                'docCode': _docCode,
+                'submitions': []
+              }
             });
           }
         }

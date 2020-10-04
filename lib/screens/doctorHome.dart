@@ -34,6 +34,7 @@ class _DoctorHomeState extends State<DoctorHome> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     ScreenScaler scaler = new ScreenScaler();
 
     Future<Null> _refresh() async {
