@@ -55,13 +55,12 @@ class _HomePageState extends State<HomePage> {
     }
 
     return StreamBuilder(
-      stream: Firestore.instance.collection('doctors').snapshots(),
-      // ignore: missing_return
+      stream: Firestore.instance.collection('docs').snapshots(),
       builder: (context,snapshot){
         if(!snapshot.hasData && snapshot.connectionState == ConnectionState.waiting)
           return const Text('');
 
-        for(int i=0; i<snapshot.data.documents.length; i++){
+        for(int i=1; i<snapshot.data.documents.length; i++){
           if(userEmail.compareTo(snapshot.data.documents[i]['email']) == 0){
             return DoctorHome(signOut: signOut, auth: widget.auth, logoutCallback: widget.logoutCallback,);
           }

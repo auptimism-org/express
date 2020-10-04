@@ -66,6 +66,11 @@ class _MyAppState extends State<MyApp> {
               fontSize: scaler.getTextSize(7.5),
               fontWeight: FontWeight.w700,
               letterSpacing: -0.2),
+          subtitle1: TextStyle(
+              color: Colors.black,
+              fontSize: scaler.getTextSize(8.5),
+              fontWeight: FontWeight.w700,
+              letterSpacing: -0.2),
         ),
       ),
       home: SplashScreen(
