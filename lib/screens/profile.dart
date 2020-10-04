@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
 
@@ -46,31 +48,99 @@ class _ProfilePageState extends State<ProfilePage> {
                             color: Colors.black,
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.w800,
-                            fontSize: scaler.getTextSize(9.0),
+                            fontSize: scaler.getTextSize(8.5),
                           ),
                         ),
                       ],
                     ),
                   ),
                   Container(
+                    height: 100,
                     color: Colors.grey[100],
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(20.0, 5.0, 10.0, 5.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          Container(
+                            decoration: new BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                    spreadRadius: 2,
+                                    blurRadius: 8,
+                                    color: Colors.black.withOpacity(0.06),
+                                    offset: Offset(0, 10))
+                              ],
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                fit: BoxFit.fill,
+                                image: AssetImage('assets/images/stockimg.jpg'),
+                              ),
+                            ),
+                            width: 68,
+                            height: 69,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                child: Text('Lorem Ipsum',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'Montserrat',
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: scaler.getTextSize(7.0),
+                                    )),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Container(
+                                child: Text(
+                                  'loremipsum@sample.com',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: scaler.getTextSize(6.0),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 50.0,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Container(
+                    color: Colors.grey[100],
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20.0, 5.0, 10.0, 5.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
                           Icon(Icons.info),
+                          SizedBox(
+                            width: 30,
+                          ),
                           Text(
                             'About Express',
                             style: TextStyle(
                               color: Colors.black,
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.w600,
-                              fontSize: scaler.getTextSize(8.0),
+                              fontSize: scaler.getTextSize(7.0),
                             ),
                           ),
                           SizedBox(
-                            width: 50.0,
+                            width: 120.0,
                           ),
                           IconButton(
                             icon: Icon(Icons.chevron_right),
@@ -85,20 +155,23 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(20.0, 5.0, 10.0, 5.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Icon(Icons.help),
+                          SizedBox(
+                            width: 28,
+                          ),
                           Text(
                             'Help',
                             style: TextStyle(
                               color: Colors.black,
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.w600,
-                              fontSize: scaler.getTextSize(8.0),
+                              fontSize: scaler.getTextSize(7.0),
                             ),
                           ),
                           SizedBox(
-                            width: 170.0,
+                            width: 228.0,
                           ),
                           IconButton(
                             icon: Icon(Icons.chevron_right),
@@ -113,20 +186,23 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(20.0, 5.0, 10.0, 5.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Icon(Icons.message),
+                          SizedBox(
+                            width: 29,
+                          ),
                           Text(
                             'Send Feedback',
                             style: TextStyle(
                               color: Colors.black,
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.w600,
-                              fontSize: scaler.getTextSize(8.0),
+                              fontSize: scaler.getTextSize(7.0),
                             ),
                           ),
                           SizedBox(
-                            width: 30.0,
+                            width: 110.0,
                           ),
                           IconButton(
                             icon: Icon(Icons.chevron_right),
@@ -137,27 +213,30 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   SizedBox(
-                    height: 10.0,
+                    height: 20.0,
                   ),
                   Container(
                     color: Colors.grey[100],
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(20.0, 5.0, 10.0, 5.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Icon(Icons.exit_to_app),
+                          SizedBox(
+                            width: 30,
+                          ),
                           Text(
                             'Sign Out',
                             style: TextStyle(
                               color: Colors.black,
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.w600,
-                              fontSize: scaler.getTextSize(8.0),
+                              fontSize: scaler.getTextSize(7.0),
                             ),
                           ),
                           SizedBox(
-                            width: 110.0,
+                            width: 180.0,
                           ),
                           IconButton(
                             icon: Icon(Icons.chevron_right),
