@@ -58,27 +58,23 @@ class _PatientHomeState extends State<PatientHome> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IconButton(
-              icon: Icon(
-                Icons.person_pin,
-              ),
-              iconSize: scaler.getWidth(2.0),
-              color: Colors.black87,
-              splashRadius: 20.0,
-              onPressed: (){
-
-              },
+            Container(
+              margin: EdgeInsets.only(left: 15),
+              child: Image(image: AssetImage('assets/images/logo.png'), fit: BoxFit.contain, height: scaler.getHeight(1.0),)
             ),
-            IconButton(
-              icon: Icon(
-                Icons.person_pin,
-              ),
-              iconSize: scaler.getWidth(2.0),
-              color: Colors.black87,
-              splashRadius: 20.0,
-              onPressed: (){
+            Container(
+              margin: EdgeInsets.only(top: 10.0),
+              child: IconButton(
+                icon: Icon(
+                  Icons.person_pin,
+                ),
+                iconSize: scaler.getWidth(2.0),
+                color: Colors.black87,
+                splashRadius: 20.0,
+                onPressed: (){
 
-              },
+                },
+              ),
             ),
           ],
         ),
@@ -141,7 +137,9 @@ class _PatientHomeState extends State<PatientHome> {
                                   return FutureBuilder(
                                     future: _loadUrl(sub[j][k]['drawingURLs'][l-1]),
                                     builder: (context, snapshot){
-                                      print(snapshot.data);
+                                      if(!snapshot.hasData && snapshot.connectionState == ConnectionState.waiting)
+                                        return Text('');
+
                                       return Container(
                                         margin: EdgeInsets.all(15.0),
                                         child: RaisedButton(

@@ -1,3 +1,5 @@
+import 'package:Express/screens/carousel.dart';
+import 'package:Express/screens/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,8 +7,8 @@ import 'package:flutter/cupertino.dart';
 import '../services/authentication.dart';
 
 class DoctorHome extends StatefulWidget {
-  DoctorHome({this.signOut,this.auth,this.logoutCallback});
-  
+  DoctorHome({this.signOut, this.auth, this.logoutCallback});
+
   final Function signOut;
   final BaseAuth auth;
   final VoidCallback logoutCallback;
@@ -46,14 +48,40 @@ class _DoctorHomeState extends State<DoctorHome> {
         onRefresh: _refresh,
         child: SingleChildScrollView(
           child: SafeArea(
-            child: Container(
-              alignment: Alignment.center,
-              child: RaisedButton(
-                child: Text('me is doc lol'),
-                onPressed: (){
-                  widget.signOut();
-                },
-              ),
+            child: Column(
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  child: RaisedButton(
+                    child: Text('me is doc lol'),
+                    onPressed: () {
+                      widget.signOut();
+                    },
+                  ),
+                ),
+                Container(
+                    alignment: Alignment.center,
+                    child: RaisedButton(
+                      child: Text('report'),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => ImgCarousel()));
+                      },
+                    )),
+                Container(
+                    alignment: Alignment.center,
+                    child: RaisedButton(
+                      child: Text('profile'),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => ProfilePage()));
+                      },
+                    )),
+              ],
             ),
           ),
         ),

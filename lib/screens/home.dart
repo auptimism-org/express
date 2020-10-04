@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
     user = await FirebaseAuth.instance.currentUser();
     userEmail = user.email;
   }
-  
+
   @override
   void initState() {
     super.initState();
@@ -48,25 +48,40 @@ class _HomePageState extends State<HomePage> {
       try {
         await widget.auth.signOut();
         widget.logoutCallback();
-        Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => LoginSignupPage(auth: new Auth(),)));
+        Navigator.pushReplacement(
+            context,
+            CupertinoPageRoute(
+                builder: (context) => LoginSignupPage(
+                      auth: new Auth(),
+                    )));
       } catch (e) {
         print(e);
       }
     }
 
     return StreamBuilder(
-      stream: Firestore.instance.collection('docs').snapshots(),
-      builder: (context,snapshot){
-        if(!snapshot.hasData && snapshot.connectionState == ConnectionState.waiting)
+      stream: Firestore.instance.collection('doctors').snapshots(),
+      // ignore: missing_return
+      builder: (context, snapshot) {
+        if (!snapshot.hasData &&
+            snapshot.connectionState == ConnectionState.waiting)
           return const Text('');
 
-        for(int i=1; i<snapshot.data.documents.length; i++){
-          if(userEmail.compareTo(snapshot.data.documents[i]['email']) == 0){
-            return DoctorHome(signOut: signOut, auth: widget.auth, logoutCallback: widget.logoutCallback,);
+        for (int i = 1; i < snapshot.data.documents.length; i++) {
+          if (userEmail.compareTo(snapshot.data.documents[i]['email']) == 0) {
+            return DoctorHome(
+              signOut: signOut,
+              auth: widget.auth,
+              logoutCallback: widget.logoutCallback,
+            );
           }
         }
 
-        return PatientHome(signOut: signOut, auth: widget.auth, logoutCallback: widget.logoutCallback,);
+        return PatientHome(
+          signOut: signOut,
+          auth: widget.auth,
+          logoutCallback: widget.logoutCallback,
+        );
       },
     );
   }
