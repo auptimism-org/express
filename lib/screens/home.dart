@@ -1,4 +1,5 @@
 import 'package:Express/screens/doctorHome.dart';
+import 'package:Express/screens/loadingScreen.dart';
 import 'package:Express/screens/login_signup_page.dart';
 import 'package:Express/screens/patientHome.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -61,27 +62,31 @@ class _HomePageState extends State<HomePage> {
 
     return StreamBuilder(
       stream: Firestore.instance.collection('doctors').snapshots(),
-      // ignore: missing_return
       builder: (context, snapshot) {
         if (!snapshot.hasData &&
             snapshot.connectionState == ConnectionState.waiting)
-          return const Text('');
+          return LoadingScreen();
 
-        for (int i = 1; i < snapshot.data.documents.length; i++) {
-          if (userEmail.compareTo(snapshot.data.documents[i]['email']) == 0) {
-            return DoctorHome(
-              signOut: signOut,
-              auth: widget.auth,
-              logoutCallback: widget.logoutCallback,
-            );
+        if(snapshot.hasData){
+          for (int i = 1; i < snapshot.data.documents.length; i++) {
+            if (userEmail.compareTo(snapshot.data.documents[i]['email']) == 0) {
+              return DoctorHome(
+                signOut: signOut,
+                auth: widget.auth,
+                logoutCallback: widget.logoutCallback,
+              );
+            }
           }
+          return PatientHome(
+            signOut: signOut,
+            auth: widget.auth,
+            logoutCallback: widget.logoutCallback,
+          );
         }
-
-        return PatientHome(
-          signOut: signOut,
-          auth: widget.auth,
-          logoutCallback: widget.logoutCallback,
-        );
+        else{
+          return LoadingScreen();
+        }
+        
       },
     );
   }

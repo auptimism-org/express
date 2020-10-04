@@ -71,6 +71,11 @@ class _MyAppState extends State<MyApp> {
               fontSize: scaler.getTextSize(8.5),
               fontWeight: FontWeight.w700,
               letterSpacing: -0.2),
+          subtitle2: TextStyle(
+              color: Colors.black,
+              fontSize: scaler.getTextSize(5.5),
+              fontWeight: FontWeight.w500,
+              letterSpacing: 0.2),
         ),
       ),
       home: SplashScreen(
@@ -78,7 +83,7 @@ class _MyAppState extends State<MyApp> {
           navigateAfterSeconds: AfterSplash(),
           image: new Image.asset('assets/images/logo.png'),
           backgroundColor: Colors.white,
-          photoSize: 120.0),
+          photoSize: 80.0),
     );
   }
 }

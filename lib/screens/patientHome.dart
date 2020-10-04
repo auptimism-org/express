@@ -72,7 +72,7 @@ class _PatientHomeState extends State<PatientHome> {
                 color: Colors.black87,
                 splashRadius: 20.0,
                 onPressed: (){
-
+                  widget.signOut();
                 },
               ),
             ),
