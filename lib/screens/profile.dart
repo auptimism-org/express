@@ -77,7 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 image: AssetImage('assets/images/stockimg.jpg'),
                               ),
                             ),
-                            width: 68,
+                            width: scaler.getWidth(5),
                             height: 69,
                           ),
                           Column(
@@ -128,7 +128,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           Icon(Icons.info),
                           SizedBox(
-                            width: 30,
+                            width: scaler.getWidth(2),
                           ),
                           Text(
                             'About Express',
@@ -140,7 +140,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           SizedBox(
-                            width: 120.0,
+                            width: scaler.getWidth(8),
                           ),
                           IconButton(
                             icon: Icon(Icons.chevron_right),
@@ -151,6 +151,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Container(
+                    width: scaler.getWidth(35),
                     color: Colors.grey[100],
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(20.0, 5.0, 10.0, 5.0),
@@ -159,7 +160,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           Icon(Icons.help),
                           SizedBox(
-                            width: 28,
+                            width: scaler.getWidth(2),
                           ),
                           Text(
                             'Help',
@@ -171,7 +172,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           SizedBox(
-                            width: 228.0,
+                            width: scaler.getWidth(16),
                           ),
                           IconButton(
                             icon: Icon(Icons.chevron_right),
@@ -190,7 +191,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           Icon(Icons.message),
                           SizedBox(
-                            width: 29,
+                            width: scaler.getWidth(2),
                           ),
                           Text(
                             'Send Feedback',
@@ -202,7 +203,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           SizedBox(
-                            width: 110.0,
+                            width: scaler.getWidth(7),
                           ),
                           IconButton(
                             icon: Icon(Icons.chevron_right),
@@ -215,16 +216,17 @@ class _ProfilePageState extends State<ProfilePage> {
                   SizedBox(
                     height: 20.0,
                   ),
-                  Container(
+                  FlatButton(
+                    onPressed: () {},
                     color: Colors.grey[100],
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 5.0, 10.0, 5.0),
+                      padding: const EdgeInsets.fromLTRB(2, 5.0, 0, 5.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Icon(Icons.exit_to_app),
                           SizedBox(
-                            width: 30,
+                            width: scaler.getWidth(2),
                           ),
                           Text(
                             'Sign Out',
@@ -236,7 +238,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           SizedBox(
-                            width: 180.0,
+                            width: scaler.getWidth(12.5),
                           ),
                           IconButton(
                             icon: Icon(Icons.chevron_right),
