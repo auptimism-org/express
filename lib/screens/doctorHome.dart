@@ -1,3 +1,4 @@
+import 'package:Express/screens/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
@@ -22,11 +23,15 @@ class _DoctorHomeState extends State<DoctorHome> {
   FirebaseUser user;
   String userEmail;
   String id;
+  String name;
 
   _loadUser() async {
     user = await FirebaseAuth.instance.currentUser();
-    userEmail = user.email;
-    id = user.uid;
+    setState(() {
+      userEmail = user.email;
+      id = user.uid;
+      Firestore.instance.collection("doctors").document(id).get().then((value){name = value.data['name'].toString();});
+    });
   }
 
   @override
@@ -34,11 +39,6 @@ class _DoctorHomeState extends State<DoctorHome> {
     _loadUser();
     super.initState();
   }
-
-  // _loadUrl(String loc) async {
-  //   var ref = FirebaseStorage.instance.ref().child(loc);
-  //   return (await ref.getDownloadURL()).toString();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +71,7 @@ class _DoctorHomeState extends State<DoctorHome> {
                 color: Colors.black87,
                 splashRadius: 20.0,
                 onPressed: (){
-                  widget.signOut();
+                  Navigator.push(context, CupertinoPageRoute(builder: (context)=>ProfilePage(signOut: widget.signOut, name: name)));
                 },
               ),
             ),
@@ -101,10 +101,14 @@ class _DoctorHomeState extends State<DoctorHome> {
                     if(!asyncSnapshot.hasData && asyncSnapshot.connectionState == ConnectionState.waiting)
                       return CircularProgressIndicator();
 
-                    if(asyncSnapshot.hasData){
-                      for(var patient in asyncSnapshot.data['patients'].keys){
-                        var p = asyncSnapshot.data['patients'][patient];
+                    if(asyncSnapshot.data['patients'] == null){
+                      return CircularProgressIndicator();
+                    }
 
+                    if(asyncSnapshot.hasData){
+                      var patients = asyncSnapshot.data['patients'];
+
+                      if(patients.length == 0){
                         return GestureDetector(
                           child: Container(
                             margin: EdgeInsets.only(top:15),
@@ -115,7 +119,7 @@ class _DoctorHomeState extends State<DoctorHome> {
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.grey[300],
-                                  blurRadius: 15.0,
+                                  blurRadius: 10.0,
                                   spreadRadius: 1.0,
                                   offset: Offset(
                                     0.0,
@@ -135,50 +139,15 @@ class _DoctorHomeState extends State<DoctorHome> {
                                 },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(horizontal: 10.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.person_pin,
-                                            size: scaler.getWidth(6.5),
-                                            color: Colors.grey[500],
-                                          ),
-                                          Column(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                width: scaler.getWidth(8.0),
-                                                child: Text(
-                                                  p['name'],
-                                                  style: GoogleFonts.montserrat(
-                                                    textStyle: Theme.of(context).textTheme.headline4,
-                                                  ),
-                                                ),
-                                              ),
-                                              Text(
-                                                "Date of birth: ${p['dob']}",
-                                                style: GoogleFonts.montserrat(
-                                                  textStyle: Theme.of(context).textTheme.subtitle2,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: scaler.getWidth(10.0),
-                                                child: Text(
-                                                  "Parent: ${p['parentName']}",
-                                                  style: GoogleFonts.montserrat(
-                                                    textStyle: Theme.of(context).textTheme.subtitle2,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                  alignment: Alignment.center,
+                                  child: SizedBox(
+                                    width: scaler.getWidth(8.0),
+                                    child: Text(
+                                      'No patients found.',
+                                      style: GoogleFonts.montserrat(
+                                        textStyle: Theme.of(context).textTheme.headline4,
                                       ),
-                                    ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -186,7 +155,179 @@ class _DoctorHomeState extends State<DoctorHome> {
                           ),
                         );
                       }
-                      return Text('');
+
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: patients.length,
+                        itemBuilder: (context, index){
+                          String key = patients.keys.elementAt(index);
+                          return GestureDetector(
+                            child: Container(
+                              margin: EdgeInsets.only(top:15),
+                              width: scaler.getWidth(24.0),
+                              height: scaler.getHeight(4.6),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey[300],
+                                    blurRadius: 10.0,
+                                    spreadRadius: 1.0,
+                                    offset: Offset(
+                                      0.0,
+                                      0.0, 
+                                    ),
+                                  )
+                                ]
+                              ),
+                              child: Material(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: Colors.white,
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  splashColor: Colors.grey[300],
+                                  onTap: (){
+
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 10.0),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Icon(
+                                              Icons.person_pin,
+                                              size: scaler.getWidth(6.5),
+                                              color: Colors.grey[500],
+                                            ),
+                                            Column(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                SizedBox(
+                                                  width: scaler.getWidth(8.0),
+                                                  child: Text(
+                                                    patients[key]['name'],
+                                                    style: GoogleFonts.montserrat(
+                                                      textStyle: Theme.of(context).textTheme.headline4,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "Date of birth: ${patients[key]['dob']}",
+                                                  style: GoogleFonts.montserrat(
+                                                    textStyle: Theme.of(context).textTheme.subtitle2,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: scaler.getWidth(10.0),
+                                                  child: Text(
+                                                    "Parent: ${patients[key]['parentName']}",
+                                                    style: GoogleFonts.montserrat(
+                                                      textStyle: Theme.of(context).textTheme.subtitle2,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+
+                      // for(var patient in asyncSnapshot.data['patients'].keys){
+                      //   var p = asyncSnapshot.data['patients'][patient];
+
+                      //   return GestureDetector(
+                      //     child: Container(
+                      //       margin: EdgeInsets.only(top:15),
+                      //       width: scaler.getWidth(24.0),
+                      //       height: scaler.getHeight(4.6),
+                      //       decoration: BoxDecoration(
+                      //         borderRadius: BorderRadius.circular(10.0),
+                      //         boxShadow: [
+                      //           BoxShadow(
+                      //             color: Colors.grey[300],
+                      //             blurRadius: 15.0,
+                      //             spreadRadius: 1.0,
+                      //             offset: Offset(
+                      //               0.0,
+                      //               0.0, 
+                      //             ),
+                      //           )
+                      //         ]
+                      //       ),
+                      //       child: Material(
+                      //         borderRadius: BorderRadius.circular(10.0),
+                      //         color: Colors.white,
+                      //         child: InkWell(
+                      //           borderRadius: BorderRadius.circular(10.0),
+                      //           splashColor: Colors.grey[300],
+                      //           onTap: (){
+
+                      //           },
+                      //           child: Container(
+                      //             padding: EdgeInsets.symmetric(horizontal: 10.0),
+                      //             child: Column(
+                      //               mainAxisAlignment: MainAxisAlignment.center,
+                      //               children: [
+                      //                 Row(
+                      //                   mainAxisAlignment: MainAxisAlignment.center,
+                      //                   children: [
+                      //                     Icon(
+                      //                       Icons.person_pin,
+                      //                       size: scaler.getWidth(6.5),
+                      //                       color: Colors.grey[500],
+                      //                     ),
+                      //                     Column(
+                      //                       mainAxisAlignment: MainAxisAlignment.start,
+                      //                       crossAxisAlignment: CrossAxisAlignment.start,
+                      //                       children: [
+                      //                         SizedBox(
+                      //                           width: scaler.getWidth(8.0),
+                      //                           child: Text(
+                      //                             p['name'],
+                      //                             style: GoogleFonts.montserrat(
+                      //                               textStyle: Theme.of(context).textTheme.headline4,
+                      //                             ),
+                      //                           ),
+                      //                         ),
+                      //                         Text(
+                      //                           "Date of birth: ${p['dob']}",
+                      //                           style: GoogleFonts.montserrat(
+                      //                             textStyle: Theme.of(context).textTheme.subtitle2,
+                      //                           ),
+                      //                         ),
+                      //                         SizedBox(
+                      //                           width: scaler.getWidth(10.0),
+                      //                           child: Text(
+                      //                             "Parent: ${p['parentName']}",
+                      //                             style: GoogleFonts.montserrat(
+                      //                               textStyle: Theme.of(context).textTheme.subtitle2,
+                      //                             ),
+                      //                           ),
+                      //                         ),
+                      //                       ],
+                      //                     ),
+                      //                   ],
+                      //                 ),
+                      //               ],
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   );
+                      // }
                     }
                     else{
                       CircularProgressIndicator();

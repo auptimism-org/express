@@ -1,4 +1,5 @@
 import 'package:Express/screens/draw.dart';
+import 'package:Express/screens/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
@@ -72,7 +73,7 @@ class _PatientHomeState extends State<PatientHome> {
                 color: Colors.black87,
                 splashRadius: 20.0,
                 onPressed: (){
-                  widget.signOut();
+                  Navigator.push(context, CupertinoPageRoute(builder: (context)=>ProfilePage(signOut: widget.signOut,)));
                 },
               ),
             ),
@@ -142,21 +143,28 @@ class _PatientHomeState extends State<PatientHome> {
 
                                       return Container(
                                         margin: EdgeInsets.all(15.0),
-                                        child: RaisedButton(
-                                          elevation: 5.0,
-                                          color: Colors.grey[100],
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
+                                        child: GestureDetector(
+                                          child: Material(
+                                            elevation: 5.0,
+                                            color: Colors.grey[100],
+                                            borderRadius: BorderRadius.circular(15.0),
+                                            child: Ink(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(15.0),
+                                                image: DecorationImage(
                                                   image: NetworkImage(snapshot.data),
-                                                  fit: BoxFit.fill),
+                                                  fit: BoxFit.fill,
+                                                ),
+                                              ),
+                                              child: InkWell(
+                                                splashColor: Color(0x77202020),
+                                                borderRadius: BorderRadius.circular(15.0),
+                                                onTap: () {},
+                                              ),
                                             ),
                                           ),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(15.0),
-                                          ),
-                                          onPressed: () {
-                                          },
+                                          
+                                          
                                         ),
                                       );
                                     },

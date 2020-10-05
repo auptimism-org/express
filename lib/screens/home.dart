@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
       try {
         await widget.auth.signOut();
         widget.logoutCallback();
-        Navigator.pushReplacement(
+        Navigator.pop(
             context,
             CupertinoPageRoute(
                 builder: (context) => LoginSignupPage(
@@ -59,6 +59,8 @@ class _HomePageState extends State<HomePage> {
         print(e);
       }
     }
+
+    Function so = signOut;
 
     return StreamBuilder(
       stream: Firestore.instance.collection('doctors').snapshots(),
@@ -71,14 +73,14 @@ class _HomePageState extends State<HomePage> {
           for (int i = 1; i < snapshot.data.documents.length; i++) {
             if (userEmail.compareTo(snapshot.data.documents[i]['email']) == 0) {
               return DoctorHome(
-                signOut: signOut,
+                signOut: so,
                 auth: widget.auth,
                 logoutCallback: widget.logoutCallback,
               );
             }
           }
           return PatientHome(
-            signOut: signOut,
+            signOut: so,
             auth: widget.auth,
             logoutCallback: widget.logoutCallback,
           );

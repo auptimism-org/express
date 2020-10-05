@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
               letterSpacing: 0.4),
           headline4: TextStyle(
               color: Colors.black,
-              fontSize: scaler.getTextSize(6.5),
+              fontSize: scaler.getTextSize(7.0),
               fontWeight: FontWeight.w700,
               letterSpacing: -0.2),
           headline5: TextStyle(
@@ -75,6 +75,11 @@ class _MyAppState extends State<MyApp> {
               color: Colors.black,
               fontSize: scaler.getTextSize(5.5),
               fontWeight: FontWeight.w500,
+              letterSpacing: 0.2),
+          overline: TextStyle(
+              color: Colors.black,
+              fontSize: scaler.getTextSize(5.8),
+              fontWeight: FontWeight.w300,
               letterSpacing: 0.2),
         ),
       ),
