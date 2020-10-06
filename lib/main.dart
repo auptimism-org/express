@@ -8,13 +8,10 @@ import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
 
 void main() {
   Paint.enableDithering = true;
-  runApp(MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MyApp(),
-      routes: {
-        '/home': (context) => new Home(),
-        '/noInternet': (context) => new NoInternetPage(),
-      }));
+  runApp(MaterialApp(debugShowCheckedModeBanner: false, home: MyApp(), routes: {
+    '/home': (context) => new Home(),
+    '/noInternet': (context) => new NoInternetPage(),
+  }));
 }
 
 class MyApp extends StatefulWidget {
