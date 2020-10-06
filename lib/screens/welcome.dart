@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
-import '../screens/root_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../services/authentication.dart';
 
 class Welcome extends StatelessWidget {
+  Welcome({this.auth, this.logoutCallback});
+
+  final BaseAuth auth;
+  final VoidCallback logoutCallback;
   @override
   Widget build(BuildContext context) {
     ScreenScaler scaler = ScreenScaler();
@@ -14,7 +18,7 @@ class Welcome extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: scaler.getHeight(5),
+              height: scaler.getHeight(2.0),
             ),
             Container(
                 child: Row(
@@ -22,22 +26,20 @@ class Welcome extends StatelessWidget {
               children: [
                 Container(
                   child: Image(
-                    image: AssetImage('assets/images/logo_express.png'),
+                    image: AssetImage('assets/images/logo.png'),
                     width: scaler.getWidth(5),
                     height: scaler.getHeight(5),
                   ),
                 ),
-                SizedBox(
-                  width: 10,
-                ),
                 Container(
-                  child: new Image.asset('assets/images/logo.png'),
+                  margin: EdgeInsets.only(left: 15.0),
+                  child: Image(
+                    image: AssetImage('assets/images/logo_express.png'),
+                    width: scaler.getWidth(14.0),
+                  ),
                 )
               ],
             )),
-            SizedBox(
-              height: scaler.getHeight(0.2),
-            ),
             Container(
               child: Image(
                 image: AssetImage('assets/images/painting_vector.png'),
@@ -46,21 +48,23 @@ class Welcome extends StatelessWidget {
             SizedBox(
               height: scaler.getHeight(0.2),
             ),
-            FlatButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6.0)),
-              onPressed: () {
-                return new RootPage(auth: new Auth());
-              },
-              child: Text(
-                "Get Started",
-                style: TextStyle(
-                  fontSize: scaler.getTextSize(7),
+            SizedBox(
+              width: scaler.getWidth(24.0),
+              child: FlatButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6.0)),
+                onPressed: () {
+                  logoutCallback();
+                },
+                child: Text(
+                  "Get Started",
+                  style: GoogleFonts.montserrat(
+                    textStyle: Theme.of(context).textTheme.headline5,
+                  )
                 ),
+                textColor: Colors.white,
+                color: Theme.of(context).primaryColor,
               ),
-              textColor: Colors.white,
-              color: Theme.of(context).primaryColor,
-              padding: EdgeInsets.fromLTRB(130, 13, 130, 13),
             ),
             Container(
               // padding: EdgeInsets.symmetric(vertical: 30),
@@ -68,18 +72,12 @@ class Welcome extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    child: Text("Have an account?"),
-                  ),
-                  FlatButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: () {},
                     child: Text(
-                      "Sign In",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                      "Beyond just pixels.",
+                      style: GoogleFonts.montserrat(
+                        textStyle: Theme.of(context).textTheme.headline2,
                       ),
                     ),
-                    textColor: Theme.of(context).primaryColor,
                   ),
                 ],
               ),

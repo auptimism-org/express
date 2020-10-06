@@ -1,8 +1,8 @@
 import 'package:Express/screens/noInternetPage.dart';
+import 'package:Express/screens/root_page.dart';
+import 'package:Express/services/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:splashscreen/splashscreen.dart';
-import 'services/authentication.dart';
-import 'screens/root_page.dart';
 import 'screens/home.dart';
 import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
 

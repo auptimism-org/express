@@ -186,46 +186,46 @@ class _PatientHomeState extends State<PatientHome> {
           ),
         ),
       ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Container(
-            margin: EdgeInsets.only(bottom: 10.0),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: Row(
-              children: [
-                Material(
-                  color: Colors.transparent,
-                  child: IconButton(
-                    icon: Icon(Icons.camera),
-                    onPressed: (){},
-                    color: Colors.white,
-                    splashRadius: 24.0,
-                    splashColor: Colors.white,
-                  ),
-                ),
-                Text(
-                  '|',
-                  style: TextStyle(color: Colors.white, fontSize: scaler.getTextSize(8.0), fontWeight: FontWeight.w300),
-                ),
-                Material(
-                  color: Colors.transparent,
-                  child: IconButton(
-                    icon: Icon(Icons.insert_photo),
-                    onPressed: (){},
-                    color: Colors.white,
-                    splashRadius: 24.0,
-                    splashColor: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+      // floatingActionButton: Row(
+      //   mainAxisAlignment: MainAxisAlignment.end,
+      //   children: [
+      //     Container(
+      //       margin: EdgeInsets.only(bottom: 10.0),
+      //       decoration: BoxDecoration(
+      //         color: Theme.of(context).primaryColor,
+      //         borderRadius: BorderRadius.circular(10.0),
+      //       ),
+      //       child: Row(
+      //         children: [
+      //           Material(
+      //             color: Colors.transparent,
+      //             child: IconButton(
+      //               icon: Icon(Icons.camera),
+      //               onPressed: (){},
+      //               color: Colors.white,
+      //               splashRadius: 24.0,
+      //               splashColor: Colors.white,
+      //             ),
+      //           ),
+      //           Text(
+      //             '|',
+      //             style: TextStyle(color: Colors.white, fontSize: scaler.getTextSize(8.0), fontWeight: FontWeight.w300),
+      //           ),
+      //           Material(
+      //             color: Colors.transparent,
+      //             child: IconButton(
+      //               icon: Icon(Icons.insert_photo),
+      //               onPressed: (){},
+      //               color: Colors.white,
+      //               splashRadius: 24.0,
+      //               splashColor: Colors.white,
+      //             ),
+      //           ),
+      //         ],
+      //       ),
+      //     ),
+      //   ],
+      // ),
     );
   }
 }
