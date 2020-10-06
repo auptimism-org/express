@@ -1,3 +1,4 @@
+import 'package:Express/screens/welcome.dart';
 import 'package:flutter/material.dart';
 import '../screens/login_signup_page.dart';
 import '../services/authentication.dart';
@@ -10,6 +11,7 @@ enum AuthStatus {
   NOT_DETERMINED,
   NOT_LOGGED_IN,
   LOGGED_IN,
+  WELCOME
 }
 
 class RootPage extends StatefulWidget {
@@ -43,7 +45,7 @@ class _RootPageState extends State<RootPage> {
         }
         authStatus = (user?.isEmailVerified == true)
             ? AuthStatus.LOGGED_IN
-            : AuthStatus.NOT_LOGGED_IN;
+            : AuthStatus.WELCOME;
       });
     });
   }
@@ -64,6 +66,13 @@ class _RootPageState extends State<RootPage> {
   void logoutCallback() {
     setState(() {
       authStatus = AuthStatus.NOT_LOGGED_IN;
+      _userId = "";
+    });
+  }
+
+  void welcomePageCallback() {
+    setState(() {
+      authStatus = AuthStatus.WELCOME;
       _userId = "";
     });
   }
@@ -109,6 +118,12 @@ class _RootPageState extends State<RootPage> {
       switch (authStatus) {
         case AuthStatus.NOT_DETERMINED:
           return buildWaitingScreen();
+          break;
+        case AuthStatus.WELCOME:
+          return Welcome(
+            auth: widget.auth,
+            logoutCallback: logoutCallback,
+          );
           break;
         case AuthStatus.NOT_LOGGED_IN:
           return new LoginSignupPage(

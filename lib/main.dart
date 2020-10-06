@@ -1,8 +1,8 @@
 import 'package:Express/screens/noInternetPage.dart';
+import 'package:Express/screens/root_page.dart';
+import 'package:Express/services/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:splashscreen/splashscreen.dart';
-import 'services/authentication.dart';
-import 'screens/root_page.dart';
 import 'screens/home.dart';
 import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
 
@@ -50,7 +50,7 @@ class _MyAppState extends State<MyApp> {
               letterSpacing: 0.4),
           headline4: TextStyle(
               color: Colors.black,
-              fontSize: scaler.getTextSize(6.5),
+              fontSize: scaler.getTextSize(7.0),
               fontWeight: FontWeight.w700,
               letterSpacing: -0.2),
           headline5: TextStyle(
@@ -72,6 +72,11 @@ class _MyAppState extends State<MyApp> {
               color: Colors.black,
               fontSize: scaler.getTextSize(5.5),
               fontWeight: FontWeight.w500,
+              letterSpacing: 0.2),
+          overline: TextStyle(
+              color: Colors.black,
+              fontSize: scaler.getTextSize(5.8),
+              fontWeight: FontWeight.w300,
               letterSpacing: 0.2),
         ),
       ),

@@ -233,53 +233,38 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         ),
       );
     }
-    return SafeArea(
-      child: new Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          title: Container(
-            margin: EdgeInsets.only(top: 20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                IconButton(
-                  splashRadius: 14,
-                  icon: Icon(
-                    Icons.close,
-                    color: Colors.black,
-                  ),
-                  onPressed: (){}
-                ),
-                Text(
-                  _process,
-                  style: GoogleFonts.montserrat(
-                    textStyle: Theme.of(context).textTheme.headline6,
-                  ),
-                ),
-              ],
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        title: Container(
+          alignment: Alignment.center,
+          child: Text(
+            _process,
+            style: GoogleFonts.montserrat(
+              textStyle: Theme.of(context).textTheme.headline6,
             ),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            margin: EdgeInsets.only(top: 20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                    padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                    ),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
                   ),
                 ),
-                _showForm(),
-                _showCircularProgress()
-              ],
-            ),
+              ),
+              _showForm(),
+              _showCircularProgress()
+            ],
           ),
         ),
       ),
