@@ -1,7 +1,8 @@
 # Express
 Beyond just pixels.
 
-Beyond just pixels.
+![Expess Cover](https://i.ibb.co/dtq3YXr/Screenshot-20210418-180132.png)
+
 # Why is it important?
 Now taking this into context with 3 highlight factors of:
 * The increase in COVID-19 cases in every country made it impossible for physical therapies to take place even if it is with utmost precautions.
